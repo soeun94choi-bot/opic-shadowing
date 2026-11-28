@@ -42,6 +42,22 @@
     .drive-message{margin-top:10px;font-size:12px;line-height:1.6;color:#3a806b;min-height:18px}
     .drive-message.error{color:#ad4f43}.drive-source{display:block;margin-bottom:9px;font-size:12px;color:#5a6598;overflow-wrap:anywhere}
     .drive-warning{padding:9px 11px;background:#fff8ea;border:1px solid #ffebc6;color:#935f20;border-radius:9px;font-size:12px;line-height:1.5;margin-bottom:12px}
+    /* Per-question Useful Expressions from Google Docs (read-only) */
+    .expression-panel{margin:12px 0 16px;padding:14px;border:1px solid #e2e5fb;border-radius:13px;background:#fcfbff}
+    .expression-header{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+    .expression-header strong{font-size:13px;color:#50469d}
+    .expression-count{font-size:11px;color:#7a79a6}
+    .expression-intro{color:#7d8299;font-size:11px;line-height:1.55;margin:0 0 10px}
+    .expression-row{border:1px solid #e7e7f4;background:#fff;border-radius:11px;padding:12px;margin-top:8px}
+    .expression-ko{font-size:13px;font-weight:750;color:#334764;line-height:1.5;overflow-wrap:anywhere}
+    .expression-en{font-size:14px;color:#5b49b7;font-weight:700;margin:8px 0 0;line-height:1.55;overflow-wrap:anywhere}
+    .expression-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+    .expression-actions button{min-height:32px}
+    .expression-details{margin-top:9px;font-size:12px;color:#56647c;line-height:1.6;white-space:pre-wrap}
+    .expression-details summary{cursor:pointer;font-weight:700;color:#6657b3}
+    .expression-general-notes{margin-top:12px;padding:10px 12px;background:#f7f8fc;border-radius:9px;font-size:12px;white-space:pre-wrap;color:#4e5b72;line-height:1.65}
+    .expression-general-notes summary{cursor:pointer;font-weight:750}
+    .expression-empty{font-size:12px;color:#7987a0;margin:4px 0;line-height:1.65}
     /* Question-to-answer training mode */
     .question-box{border:1px solid #e0ddfa;background:#f8f7ff;border-radius:14px;padding:14px 15px;margin-bottom:14px}
     .question-heading{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:7px}
@@ -79,7 +95,14 @@
       <div id="driveFileList" class="drive-list" role="tabpanel" hidden><p class="drive-empty">OPIc 폴더와 하위 폴더의 파일을 표시합니다.</p></div>
       <div class="drive-message" id="driveMessage" role="status" aria-live="polite"></div>
     </section>
-    <section class="panel" aria-label="Playback"><div class="section-title"><h2>Playback</h2><span class="hint">Read &rarr; shadow &rarr; repeat</span></div><div class="question-box" aria-label="Selected OPIc question"><div class="question-heading"><strong>OPIc Question</strong><span class="question-caption" id="questionCaption">No question loaded</span></div><p class="question-text" id="questionText">Select a question from OPIc Master to practice.</p><button type="button" class="tinybutton" id="playQuestionOnly" title="Listen only to the selected OPIc question" style="margin-top:10px" disabled>&#9654; Listen to question only</button></div><div class="question-setting"><label for="playQuestionFirst"><input id="playQuestionFirst" type="checkbox" checked> Play question before answer</label><label for="questionPauseSeconds">Think time <select id="questionPauseSeconds" aria-label="Seconds to think after question"><option value="0">0 sec</option><option value="3">3 sec</option><option value="5" selected>5 sec</option><option value="10">10 sec</option><option value="15">15 sec</option></select></label></div><p class="question-mode-note" id="questionModeNote">Select an OPIc Master question first. Normal answer playback works without a question.</p><div class="controls"><button class="btn light" id="previous" title="Previous sentence">&#8592; Prev</button><button class="btn primary" id="play" title="Start or pause">&#9654; Play</button><button class="btn light" id="next" title="Next sentence">Next &#8594;</button></div><div class="action-row"><button class="btn red" id="stop">&#9632; Stop</button><button class="btn alt" id="repeatOne">&#8635; Loop this sentence</button></div><div class="toggle-row"><div><span>Repeat all sentences</span><small>Return to sentence 1 after the last</small></div><input class="switch" type="checkbox" id="repeatAll" checked aria-label="Repeat all sentences"></div><div class="notice" id="warning" role="status"></div></section>
+    <section class="panel" aria-label="Playback"><div class="section-title"><h2>Playback</h2><span class="hint">Read &rarr; shadow &rarr; repeat</span></div><div class="question-box" aria-label="Selected OPIc question"><div class="question-heading"><strong>OPIc Question</strong><span class="question-caption" id="questionCaption">No question loaded</span></div><p class="question-text" id="questionText">Select a question from OPIc Master to practice.</p><button type="button" class="tinybutton" id="playQuestionOnly" title="Listen only to the selected OPIc question" style="margin-top:10px" disabled>&#9654; Listen to question only</button></div><div class="question-setting"><label for="playQuestionFirst"><input id="playQuestionFirst" type="checkbox" checked> Play question before answer</label><label for="questionPauseSeconds">Think time <select id="questionPauseSeconds" aria-label="Seconds to think after question"><option value="0">0 sec</option><option value="3">3 sec</option><option value="5" selected>5 sec</option><option value="10">10 sec</option><option value="15">15 sec</option></select></label></div><p class="question-mode-note" id="questionModeNote">Select an OPIc Master question first. Normal answer playback works without a question.</p>
+      <section class="expression-panel" aria-label="Useful Expressions for selected question">
+        <div class="expression-header"><strong>Useful Expressions · 이 문제에서 쓸 표현</strong><span class="expression-count" id="expressionCount">0 expressions</span></div>
+        <p class="expression-intro">Google Docs의 Useful Expressions를 불러와요. 한국어 뜻을 보고 영어 표현을 떠올려보세요.</p>
+        <div id="expressionList" aria-live="polite"><p class="expression-empty">문서를 불러오면 표현이 여기에 나타나요.</p></div>
+        <div id="expressionNotes"></div>
+      </section>
+      <div class="controls"><button class="btn light" id="previous" title="Previous sentence">&#8592; Prev</button><button class="btn primary" id="play" title="Start or pause">&#9654; Play</button><button class="btn light" id="next" title="Next sentence">Next &#8594;</button></div><div class="action-row"><button class="btn red" id="stop">&#9632; Stop</button><button class="btn alt" id="repeatOne">&#8635; Loop this sentence</button></div><div class="toggle-row"><div><span>Repeat all sentences</span><small>Return to sentence 1 after the last</small></div><input class="switch" type="checkbox" id="repeatAll" checked aria-label="Repeat all sentences"></div><div class="notice" id="warning" role="status"></div></section>
     <section class="panel" aria-label="Voice and timing"><div class="section-title"><h2>Voice &amp; timing</h2><span class="hint">Separate language voices</span></div><div class="row2"><div class="field"><label for="koVoice">Korean voice</label><select id="koVoice"><option value="">Device default</option></select></div><div class="field"><label for="enVoice">English voice</label><select id="enVoice"><option value="">Device default</option></select></div></div><div class="inlinebuttons"><button class="tinybutton" id="testKo">Test Korean voice</button><button class="tinybutton" id="testEn">Test English voice</button><button class="tinybutton" id="refreshVoices">Refresh voices</button></div><div class="range-label"><label for="koRate">Korean speaking speed</label><b id="koRateValue">1.00x</b></div><input class="range" type="range" id="koRate" min="0.6" max="1.4" value="1" step="0.05"><div class="range-label"><label for="enRate">English speaking speed</label><b id="enRateValue">0.90x</b></div><input class="range" type="range" id="enRate" min="0.6" max="1.4" value="0.9" step="0.05"><div class="row2" style="margin-top:12px"><div class="field"><label for="koTimes">Korean repeats</label><select id="koTimes"><option value="0">0 times</option><option value="1" selected>1 time</option><option value="2">2 times</option></select></div><div class="field"><label for="enTimes">English repeats</label><select id="enTimes"><option value="0">0 times</option><option value="1">1 time</option><option value="2" selected>2 times</option><option value="3">3 times</option><option value="4">4 times</option><option value="5">5 times</option></select></div></div><div class="field" style="margin-top:13px"><label for="pauseSeconds">Pause between readings (seconds)</label><select id="pauseSeconds"><option value="0">No pause</option><option value="1">1 second</option><option value="2">2 seconds</option><option value="3" selected>3 seconds</option><option value="4">4 seconds</option><option value="5">5 seconds</option><option value="7">7 seconds</option><option value="10">10 seconds</option></select></div><div class="voice-tip">Voices come from your browser and device. The available voices may sound different from Edge's built-in Read Aloud. For best results, keep the page open and screen awake while practicing.</div></section>
   </div>
   </main><div class="footer">Your script and playback settings remain on this browser. With Google login, the selected Drive document is fetched directly into your browser and is never modified on Google Drive. Browser speech does not create MP3 files.</div></div>
@@ -91,14 +114,54 @@
  const defaultScript='\uC800\uB294 \uC218\uC601\uC744 \uC88B\uC544\uD574\uC694. | I love swimming.\n\uD2B9\uD788 \uBC14\uB2E4\uC5D0\uC11C \uC218\uC601\uD558\uB294 \uAC78 \uC88B\uC544\uD574\uC694. | I especially love swimming in the ocean.\n\uC88B\uC740 \uB0A0\uC528\uC5D0\uB294 \uCE5C\uAD6C\uB4E4\uACFC \uBC14\uB2E4\uC5D0 \uAC00\uC694. | When the weather is nice, I go to the beach with my friends.\n\uC815\uB9D0 \uD3B8\uC548\uD558\uACE0 \uC990\uAC70\uC6CC\uC694. | It always makes me feel relaxed and happy.';
  const defaults={script:defaultScript,koRate:'1',enRate:'0.9',koTimes:'1',enTimes:'2',pauseSeconds:'3',repeatAll:true,koVoice:'',enVoice:'',playQuestionFirst:true,questionPauseSeconds:'5',selectedQuestion:'',selectedQuestionId:''};
  let settings={...defaults};try{settings={...defaults,...JSON.parse(localStorage.getItem('opic-shadowing-v2')||'{}')}}catch(e){}
- const synth=window.speechSynthesis;let pairs=[];let voices=[];let cursor=0;let playing=false;let paused=false;let oneLoop=false;let playGeneration=0;let activeCancel=null;let nowStage='Ready';let currentPass=0;let selectedQuestion=String(settings.selectedQuestion||'');let selectedQuestionId=String(settings.selectedQuestionId||'');let playingQuestionOnly=false;
+ const synth=window.speechSynthesis;let pairs=[];let voices=[];let cursor=0;let playing=false;let paused=false;let oneLoop=false;let playGeneration=0;let activeCancel=null;let nowStage='Ready';let currentPass=0;let selectedQuestion=String(settings.selectedQuestion||'');let selectedQuestionId=String(settings.selectedQuestionId||'');let playingQuestionOnly=false;let activeExpressions=[];let activeNotes=[];
  function save(){try{localStorage.setItem('opic-shadowing-v2',JSON.stringify({...settings,script:$('script').value}));}catch(e){}}
  function parse(input){const nonEmpty=input.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);const result=[];const error=[];let i=0;
    while(i<nonEmpty.length){const line=nonEmpty[i];const cut=line.indexOf('|');if(cut!==-1){const ko=line.slice(0,cut).trim();const en=line.slice(cut+1).trim();if(!ko||!en){error.push('Line '+(i+1)+' needs both Korean and English.');}else{result.push({ko,en});}i++;}else if(i+1<nonEmpty.length&&nonEmpty[i+1].indexOf('|')===-1){result.push({ko:line,en:nonEmpty[i+1]});i+=2;}else{error.push('Unpaired line '+(i+1)+': '+line.slice(0,40));i++;}}
    return {result,error};
  }
+ // A Google Doc may have three sections: Answer, Useful Expressions, and Notes.
+ // Keep the notes and expression list separate from the shadowing sentence pairs.
+ function normalizeNoteKey(s){return String(s||'').trim().toLocaleLowerCase().replace(/[.!?]+$/,'').replace(/\s+/g,' ');}
+ function setExpressionData(expressions=[],notes=[]){activeExpressions=expressions;activeNotes=notes;renderExpressionPlanner();}
+ function speakPlannerExpression(en){
+   if(!synth||!en){warn('영어 음성을 재생할 수 없습니다.');return;}
+   halt();playing=true;paused=false;nowStage='Useful expression';renderMeta();warn('');
+   const token=playGeneration;try{synth.resume();}catch(e){}
+   (async()=>{const ok=await speech(en,'en',token);if(token!==playGeneration)return;
+     halt();nowStage=ok?'Expression complete':'Press Play to begin';renderMeta();})();
+ }
+ function renderExpressionPlanner(){
+   const list=$('expressionList'),noteBox=$('expressionNotes');
+   if(!list||!noteBox)return;
+   list.replaceChildren();noteBox.replaceChildren();
+   $('expressionCount').textContent=activeExpressions.length+' expressions';
+   if(!activeExpressions.length){const p=document.createElement('p');p.className='expression-empty';
+     p.textContent='이 문제에는 아직 Useful Expressions가 없어요. Google Docs 끝에 표현을 추가하면 불러와요.';list.appendChild(p);}
+   for(const expression of activeExpressions){
+     const item=document.createElement('div');item.className='expression-row';
+     const ko=document.createElement('div');ko.className='expression-ko';ko.textContent=expression.ko||'영어 표현';item.appendChild(ko);
+     const en=document.createElement('div');en.className='expression-en';en.lang='en';en.textContent=expression.en;
+     en.hidden=!!expression.ko;item.appendChild(en);
+     const actions=document.createElement('div');actions.className='expression-actions';
+     if(expression.ko){const show=document.createElement('button');show.type='button';show.className='tinybutton';show.textContent='영어 보기';
+       show.addEventListener('click',()=>{en.hidden=!en.hidden;show.textContent=en.hidden?'영어 보기':'영어 가리기';});actions.appendChild(show);}
+     const listen=document.createElement('button');listen.type='button';listen.className='tinybutton';listen.textContent='\u25B6 영어 듣기';
+     listen.addEventListener('click',()=>speakPlannerExpression(expression.en));actions.appendChild(listen);item.appendChild(actions);
+     const note=activeNotes.find(n=>normalizeNoteKey(n.title)===normalizeNoteKey(expression.en));
+     if(note){const details=document.createElement('details');details.className='expression-details';
+       const summary=document.createElement('summary');summary.textContent='자세한 설명';details.appendChild(summary);
+       const body=document.createElement('div');body.textContent=note.lines.join('\n');details.appendChild(body);item.appendChild(details);}
+     list.appendChild(item);
+   }
+   const general=activeNotes.filter(n=>!activeExpressions.some(x=>normalizeNoteKey(x.en)===normalizeNoteKey(n.title)));
+   if(general.length){const details=document.createElement('details');details.className='expression-general-notes';
+     const summary=document.createElement('summary');summary.textContent='Notes · 추가 설명 보기';details.appendChild(summary);
+     for(const n of general){const p=document.createElement('p');p.textContent=[n.title,...n.lines].filter(Boolean).join('\n');details.appendChild(p);}
+     noteBox.appendChild(details);}
+ }
  function setMessage(s,bad){$('scriptMessage').textContent=s;$('scriptMessage').style.color=bad?'#b04d43':'#467a66';}
- function apply(){const parsed=parse($('script').value);if(parsed.error.length){setMessage(parsed.error[0],true);return false;}if(!parsed.result.length){setMessage('Add at least one Korean / English pair.',true);return false;}halt();pairs=parsed.result;cursor=0;oneLoop=false;setSelectedQuestion('','');renderList();renderFocus();renderMeta();save();setMessage('Saved '+pairs.length+' sentence pair(s).',false);return true;}
+ function apply(){const parsed=parse($('script').value);if(parsed.error.length){setMessage(parsed.error[0],true);return false;}if(!parsed.result.length){setMessage('Add at least one Korean / English pair.',true);return false;}halt();pairs=parsed.result;cursor=0;oneLoop=false;setSelectedQuestion('','');setExpressionData([],[]);renderList();renderFocus();renderMeta();save();setMessage('Saved '+pairs.length+' sentence pair(s).',false);return true;}
  function renderList(){const list=$('sentences');list.textContent='';pairs.forEach((pair,i)=>{const button=document.createElement('button');button.type='button';button.className='item'+(cursor===i?' active':'');button.dataset.index=String(i);button.setAttribute('aria-label','Play sentence '+(i+1));const number=document.createElement('span');number.className='num';number.textContent=String(i+1).padStart(2,'0');const body=document.createElement('span');body.className='pair';const k=document.createElement('div');k.className='k';k.lang='ko';k.textContent=pair.ko;const e=document.createElement('div');e.className='e';e.lang='en';e.textContent=pair.en;body.append(k,e);button.append(number,body);button.addEventListener('click',()=>start(i,oneLoop));list.appendChild(button);});}
  function renderFocus(){if(!pairs.length)return;const p=pairs[cursor];$('focusKo').textContent=p.ko;$('focusEn').textContent=p.en;$('statCurrent').textContent=(cursor+1)+' / '+pairs.length;$('progressText').textContent='Sentence '+(cursor+1)+' of '+pairs.length;$('progressFill').style.width=(((cursor+1)/pairs.length)*100)+'%';Array.from($('sentences').children).forEach((item,i)=>item.classList.toggle('active',i===cursor));}
  function renderMeta(){const cnt=pairs.length;$('statPairs').textContent=cnt;$('statMode').textContent=oneLoop?'Single loop':$('repeatAll').checked?'Full loop':'Once';$('statState').textContent=paused?'Paused':playing?'Playing':'Ready';$('stageLabel').textContent=nowStage;$('play').textContent=playing?(paused?'\u25B6 Resume':'\u23F8 Pause'):'\u25B6 Play';$('repeatOne').textContent=oneLoop?'\u2713 Looping this sentence':'\u21BB Loop this sentence';$('repeatOne').classList.toggle('primary',oneLoop);$('playQuestionOnly').textContent=playingQuestionOnly?'\u25A0 Stop question':'\u25B6 Listen to question only';$('nowTag').textContent=oneLoop?'SINGLE SENTENCE LOOP':playing?'SHADOWING IN PROGRESS':'READY TO PRACTICE';$('passText').textContent='KO '+$('koTimes').value+'x \u00B7 EN '+$('enTimes').value+'x';}
@@ -230,28 +293,84 @@
    }
    return asText?response.text():response.json();
  }
- function googleDocTextLines(doc){
-   const result=[];
+ function googleDocParagraphs(doc){
+   const paragraphs=[];
    function walk(content){for(const part of content||[]){
-     if(part.paragraph){const text=(part.paragraph.elements||[]).map(e=>e.textRun?.content||'').join('').trim();if(text)result.push(text);}
+     if(part.paragraph){const text=(part.paragraph.elements||[]).map(e=>e.textRun?.content||'').join('').trim();
+       const style=part.paragraph.paragraphStyle?.namedStyleType||'';
+       for(const line of text.split(/\r?\n/)){if(line.trim())paragraphs.push({text:line.trim(),style});}}
      if(part.table){for(const row of part.table.tableRows||[])for(const cell of row.tableCells||[])walk(cell.content);}
      if(part.tableOfContents)walk(part.tableOfContents.content);
    }}
    function walkTabs(tabs){for(const tab of tabs||[]){walk(tab.documentTab?.body?.content);walkTabs(tab.childTabs);}}
    if(doc.tabs?.length)walkTabs(doc.tabs);else walk(doc.body?.content);
-   return result.flatMap(s=>s.split(/\r?\n/).map(t=>t.trim()).filter(Boolean));
+   return paragraphs;
  }
- function makeBilingualScriptFromDoc(doc){
-   const lines=googleDocTextLines(doc);
-   const answerIdx=lines.findIndex(s=>/^(?:Answer(?:\s|\b)|답변(?:\s|\b))/i.test(s));
-   const relevant=answerIdx>=0?lines.slice(answerIdx+1):lines;
-   const found=[];let pendingKo=null;
-   for(const line of relevant){
+ function googleDocSectionName(text){
+   const label=String(text||'').replace(/^[#\s]+/,'').replace(/[:：\s]+$/,'').toLocaleLowerCase();
+   if(/^(answer|답변|답변 스크립트|script)$/.test(label))return'answer';
+   if(/^(useful expressions|key expressions|핵심 표현|사용할 표현|이 문제에서 쓰고 싶은 표현)$/.test(label))return'expressions';
+   if(/^(notes|note|메모|설명|자세한 설명)$/.test(label))return'notes';
+   return null;
+ }
+ function parseBilingualAnswers(lines){
+   const pairs=[];let pendingKo=null;
+   for(const line of lines){
+     // Keep the existing Korean -> English pair format, plus 'Korean | English'.
+     const pieces=line.split('|');
+     if(pieces.length===2&&/[가-힣]/.test(pieces[0])&&/[a-zA-Z]/.test(pieces[1])){
+       pairs.push({ko:pieces[0].trim(),en:pieces[1].trim()});pendingKo=null;continue;
+     }
      if(/[가-힣]/.test(line)){pendingKo=line;continue;}
-     if(pendingKo&&/[a-zA-Z]/.test(line)){found.push({ko:pendingKo,en:line});pendingKo=null;}
+     if(pendingKo&&/[a-zA-Z]/.test(line)){pairs.push({ko:pendingKo,en:line});pendingKo=null;}
    }
-   return found;
+   return pairs;
  }
+ function parseUsefulExpressions(lines){
+   const expressions=[];const seen=new Set();
+   function add(en,ko=''){
+     en=String(en||'').trim();ko=String(ko||'').trim();
+     if(!en||!/[a-zA-Z]/.test(en))return;
+     const key=en.toLocaleLowerCase();if(seen.has(key))return;
+     seen.add(key);expressions.push({en,ko});
+   }
+   for(let i=0;i<lines.length;i++){
+     const line=lines[i].replace(/^[\s•*-]+/,'').trim();if(!line)continue;
+     if(line.includes('|')){
+       const parts=line.split('|').map(x=>x.trim());
+       if(parts.length>=2){const enFirst=/[a-zA-Z]/.test(parts[0]);
+         if(enFirst)add(parts[0],parts.slice(1).join(' | '));
+         else add(parts[1],parts[0]);continue;}
+     }
+     if(/[a-zA-Z]/.test(line)){
+       const next=(lines[i+1]||'').trim();
+       if(next&&/[가-힣]/.test(next)&&!/[a-zA-Z]/.test(next)&&!next.includes('|')){add(line,next);i++;}
+       else add(line);
+     }
+   }
+   return expressions;
+ }
+ function parseGoogleDocSections(doc){
+   const paragraphs=googleDocParagraphs(doc);
+   const explicitAnswer=paragraphs.some(p=>googleDocSectionName(p.text)==='answer');
+   let section=explicitAnswer?'preamble':'answer';
+   const answerLines=[],expressionLines=[],noteParas=[];
+   for(const p of paragraphs){
+     const heading=googleDocSectionName(p.text);
+     if(heading){section=heading;continue;}
+     if(section==='answer')answerLines.push(p.text);
+     else if(section==='expressions')expressionLines.push(p.text);
+     else if(section==='notes')noteParas.push(p);
+   }
+   const notes=[];let current=null;
+   for(const p of noteParas){
+     if(/^HEADING_[2-6]$/.test(p.style)){current={title:p.text,lines:[]};notes.push(current);}
+     else if(current)current.lines.push(p.text);
+     else{current={title:'',lines:[p.text]};notes.push(current);}
+   }
+   return{answer:parseBilingualAnswers(answerLines),expressions:parseUsefulExpressions(expressionLines),notes};
+ }
+ function makeBilingualScriptFromDoc(doc){return parseGoogleDocSections(doc).answer;}
  function putImportedPairs(rows,title,sourceRow=null){
    if(!rows.length)throw new Error('한영 문장 쌍을 찾지 못했습니다. 한국어 다음 줄에 영어 문장을 두어주세요.');
    const newText=rows.map(p=>p.ko+'\n'+p.en).join('\n\n');
@@ -267,8 +386,11 @@
  async function importGoogleDoc(docId,title,sourceRow=null){
    driveMessage('"'+title+'" 문서를 읽는 중...');
    try{const doc=await googleApi('https://docs.googleapis.com/v1/documents/'+encodeURIComponent(docId)+'?includeTabsContent=true');
-     const rows=makeBilingualScriptFromDoc(doc);
-     if(putImportedPairs(rows,title,sourceRow||driveMasterRows.find(r=>r.docId===docId)||null))driveMessage('완료! '+rows.length+'개 문장 쌍이 플레이어에 적용됐어요. ▶ Play를 누르세요.');else driveMessage('가져오기가 취소되었습니다.');
+     const sections=parseGoogleDocSections(doc),rows=sections.answer;
+     if(putImportedPairs(rows,title,sourceRow||driveMasterRows.find(r=>r.docId===docId)||null)){
+        setExpressionData(sections.expressions,sections.notes);
+        driveMessage('완료! 답변 '+rows.length+'문장 / Useful Expressions '+sections.expressions.length+'개를 불러왔어요.');
+      }else driveMessage('가져오기가 취소되었습니다.');
    }catch(e){driveMessage(String(e.message||e),true);}
  }
  async function importDriveTxt(fileId,title){
@@ -348,7 +470,7 @@
  $('driveTabMaster').addEventListener('click',()=>chooseDriveTab('master'));
  $('driveTabFiles').addEventListener('click',()=>chooseDriveTab('files'));
  $('driveSearch').addEventListener('input',renderDriveLists);
- updateDriveUi();renderDriveLists();
+ updateDriveUi();renderDriveLists();renderExpressionPlanner();
 
  window.addEventListener('pagehide',()=>{try{synth&&synth.cancel()}catch(e){}});
 })();
